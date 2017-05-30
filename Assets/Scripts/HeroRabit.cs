@@ -145,12 +145,14 @@ public class HeroRabit : MonoBehaviour {
             {
                 //Приліпаємо до платформи
                 this.transform.parent = hit.transform;
+                this.transform.localScale = Vector3.one;
             }
         }
         else
         {
             isGrounded = false;
             this.transform.parent = this.heroParent;
+            this.transform.localScale = SMALL_SIZE;
         }
         //Намалювати лінію (для розробника)
         Debug.DrawLine(from, to, Color.red);

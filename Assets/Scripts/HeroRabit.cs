@@ -4,59 +4,79 @@ using UnityEngine;
 
 public class HeroRabit : MonoBehaviour {
 
-
-    private  Vector3 BIG_SIZE = new Vector3(3, 3, 0);
-    private Vector3 SMALL_SIZE = new Vector3(2, 2, 0);
-    private Color32 RED_COLOR = new Color32(248, 120, 120, 143);
-    private Color32 WITHE_COLOR = new Color32(255, 255, 255, 255);
-
-    public float speed = 1.0f;
+    public float speed = 1;
     public float MaxJumpTime = 2.0f;
     public float JumpSpeed = 2.0f;
     public int healthLimit = 2;
-    public float invulnerableTime = 4.0f;
+
 
     Rigidbody2D myBody = null;
-    Transform heroParent = null;
-    Vector3 targetScale;
-    Color32 targetColor; 
-
     bool isGrounded = false;
     bool JumpActive = false;
-    public bool isInvulnerable = false;
-
     float JumpTime = 0f;
+    Transform heroParent = null;
+    bool is_dead = false;
     public int currentHealth = 1;
-    
-  
+    float time_to_wait = 0.0f;
+    float red_state_time = 4.0f;
+    public bool red_state = false;
+   // public bool is_red = false;
+    public bool is_big = false;
+    public bool make_big = false;
+    // Use this for initialization
     void Start () {
+        myBody = this.GetComponent<Rigidbody2D>();
         LevelController.current.setStartPosition(transform.position);
-        this.myBody = this.GetComponent<Rigidbody2D>();
         this.heroParent = this.transform.parent;
-        this.targetScale = SMALL_SIZE;
-        this.targetColor = WITHE_COLOR;
     }
+	
+  
 
-
-    Vector3 vel = Vector3.one;
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-        run();
-        jump();
-        StartCoroutine(die());
-        this.transform.localScale = Vector3.SmoothDamp(this.transform.localScale, this.targetScale, ref vel, 0.5f);
-        StartCoroutine(invulnerable());
-    }
+        Animator animator = GetComponent<Animator>();
+        if (this.is_dead)
+        {
+            animator.SetBool("dead", true);
+            time_to_wait -= Time.deltaTime;
+            if (time_to_wait <= 0)
+            {
+               
+                is_dead = false;
+                animator.SetBool("dead", false);
+                LevelController.current.onRabitDeath(this);
+            }
+            else return;
+        }
 
-    private void run()
-    {
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+
+        if (red_state)
+        {
+            red_state_time -= Time.deltaTime;
+            sr.color = Color.red;
+            if (red_state_time <= 0) red_state = false;
+        }
+        else sr.color = Color.white;
+
+        if (!is_big && make_big)
+        {
+            this.transform.localScale =  new Vector3(3, 3, 0);
+            is_big = true;
+        }
+        else if (is_big && !make_big)
+        {
+
+            this.transform.localScale = new Vector3(2, 2, 0);
+            is_big = false;
+        }
+
         //[-1, 1]
         float value = Input.GetAxis("Horizontal");
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        Animator animator = GetComponent<Animator>();
-
+        
+       
         if (value < 0)
         {
             sr.flipX = true;
@@ -65,6 +85,9 @@ public class HeroRabit : MonoBehaviour {
         {
             sr.flipX = false;
         }
+
+        jump();
+
         if (Mathf.Abs(value) > 0)
         {
             Vector2 vel = myBody.velocity;
@@ -72,7 +95,7 @@ public class HeroRabit : MonoBehaviour {
             myBody.velocity = vel;
         }
 
-
+        
         if (Mathf.Abs(value) > 0)
         {
             animator.SetBool("run", true);
@@ -81,50 +104,9 @@ public class HeroRabit : MonoBehaviour {
         {
             animator.SetBool("run", false);
         }
-    }
 
-    private IEnumerator die()
-    {
-        if (currentHealth <= 0)
-        {
-            Animator animator = GetComponent<Animator>();
-            animator.SetBool("dead", true);
-            currentHealth = 1;
-            yield return new WaitForSeconds(2.0f);
 
-            animator.SetBool("dead", false);
-            LevelController.current.onRabitDeath(this);
-            
-        }
-    }
-
-    private bool red = false;
-    private IEnumerator invulnerable()
-    {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        if (isInvulnerable)
-        {
-            if (red)
-            {
-                this.targetColor = RED_COLOR;
-                yield return new WaitForSeconds(0.3f);
-                red = false;
-            }
-            else
-            {
-                this.targetColor = WITHE_COLOR;
-                yield return new WaitForSeconds(0.3f);
-                red = true;
-            }
-            sr.color = this.targetColor;
-            yield return new WaitForSeconds(invulnerableTime);
-            isInvulnerable = false;
-        }
-        else
-        {
-            this.targetColor = WITHE_COLOR;
-            sr.color = targetColor;
-        }
+    
     }
 
     private void jump()
@@ -196,27 +178,28 @@ public class HeroRabit : MonoBehaviour {
         }
         if(currentHealth == healthLimit)
         {
-            this.targetScale = BIG_SIZE;
+            make_big = true;
         }
     }
 
     public void removeOneHealth()
     {
-        if (!isInvulnerable)
-        { 
-
+        if (!red_state)
+        {
             if (currentHealth > 1)
             {
                 currentHealth--;
-                this.targetScale = SMALL_SIZE;
-                this.isInvulnerable = true;
+                make_big = false;
+                red_state = true;
+                red_state_time = 4.0f;
             }
             else
             {
                 currentHealth--;
-                this.targetScale = SMALL_SIZE;
+                time_to_wait = 1.0f;
+                is_dead = true;
             }
-        }   
+        }
     }
 
     

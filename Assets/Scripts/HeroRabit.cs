@@ -23,7 +23,8 @@ public class HeroRabit : MonoBehaviour {
 
     bool isGrounded = false;
     bool JumpActive = false;
-    public bool isInvulnerable = false;
+    bool isInvulnerable = false;
+    bool canChangeScale = true;
 
     float JumpTime = 0f;
     public int currentHealth = 1;
@@ -46,7 +47,8 @@ public class HeroRabit : MonoBehaviour {
         run();
         jump();
         StartCoroutine(die());
-        this.transform.localScale = Vector3.SmoothDamp(this.transform.localScale, this.targetScale, ref vel, 0.5f);
+        if (canChangeScale)
+            this.transform.localScale = Vector3.SmoothDamp(this.transform.localScale, this.targetScale, ref vel, 0.5f);
         StartCoroutine(invulnerable());
     }
 
@@ -145,14 +147,16 @@ public class HeroRabit : MonoBehaviour {
             {
                 //Приліпаємо до платформи
                 this.transform.parent = hit.transform;
-                this.transform.localScale = Vector3.one;
-            }
+                canChangeScale = false;
+            } else canChangeScale = true;
+
+
         }
         else
         {
             isGrounded = false;
             this.transform.parent = this.heroParent;
-            this.transform.localScale = SMALL_SIZE;
+            
         }
         //Намалювати лінію (для розробника)
         Debug.DrawLine(from, to, Color.red);

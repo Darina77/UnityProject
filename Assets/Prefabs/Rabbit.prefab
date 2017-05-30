@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1917160742598108}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -449.69, y: -1.23, z: 0}
+  m_LocalPosition: {x: -220.5, y: -0.9, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -121,9 +121,10 @@ MonoBehaviour:
   MaxJumpTime: 2
   JumpSpeed: 5
   healthLimit: 2
-  invulnerableTime: 4
-  isInvulnerable: 0
   currentHealth: 1
+  red_state: 0
+  is_big: 0
+  make_big: 0
 --- !u!212 &212599298523212546
 SpriteRenderer:
   m_ObjectHideFlags: 1

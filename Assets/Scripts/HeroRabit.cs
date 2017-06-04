@@ -58,6 +58,8 @@ public class HeroRabit : MonoBehaviour {
         StartCoroutine(invulnerable());
     }
 
+   
+
     private void run()
     {
         //[-1, 1]

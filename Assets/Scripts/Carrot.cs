@@ -5,7 +5,6 @@ using UnityEngine;
 public class Carrot : Collectable
 {
     public Vector3 speed = new Vector3(2.0f, 0.0f, 0.0f);
-    Rigidbody2D myBody = null;
     private float direction = 1.0f;
     public float lifeTime = 5.0f;
     void Start()

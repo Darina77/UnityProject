@@ -6,7 +6,7 @@ public class Diamant : Collectable
 {
     protected override void OnRabitHit(HeroRabit rabit)
     {
-        LevelController.current.addDiamant(1);
+        LevelController.current.addDiamant();
         this.CollectedHide();
     }
 }

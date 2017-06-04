@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Orc : MonoBehaviour {
 
-    public float speed = 1.0f;
+    public float speed = 2.0f;
     public Vector3 moveBy = Vector3.one;
 
 
@@ -79,12 +79,13 @@ public class Orc : MonoBehaviour {
     { 
         Animator animator = GetComponent<Animator>();
 
-       
+
+
         animator.SetBool("attack", true);
         rabit.removeOneHealth();
         yield return new WaitForSeconds(0.8f);
-        
-        animator.SetBool("attack", false);       
+        animator.SetBool("attack", false);
+            
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -98,11 +99,11 @@ public class Orc : MonoBehaviour {
                 Vector3 my_pos = this.transform.position;
                 currentMode = Mode.Attack;
 
-                if (currentMode == Mode.Attack && Mathf.Abs(rabit_pos.y - my_pos.y) < 1.0f)
+                if (currentMode == Mode.Attack && Mathf.Abs(rabit_pos.y - my_pos.y) < 2.8f)
                 {
                     StartCoroutine(attack(rabit));
                 }
-                else if (currentMode == Mode.Attack && Mathf.Abs(rabit_pos.y - my_pos.y) > 1.0f)
+                else if (currentMode == Mode.Attack && Mathf.Abs(rabit_pos.y - my_pos.y) > 2.8f)
                 {
                     currentMode = Mode.Die;
                 }
@@ -122,27 +123,31 @@ public class Orc : MonoBehaviour {
         if (value < 0)
         {
             sr.flipX = false;
-        
+
         }
         else if (value > 0)
         {
             sr.flipX = true;
         }
-        if (Mathf.Abs(value) > 0)
-        {
-            Vector2 vel = myBody.velocity;
-            vel.x = value * speed;
-            myBody.velocity = vel;
-        }
+      
+            if (Mathf.Abs(value) > 0)
+            {
+                Vector2 vel = myBody.velocity;
+                vel.x = value * speed;
+                myBody.velocity = vel;
+            }
 
-        if (Mathf.Abs(value) > 0)
-        {
-            animator.SetBool("run", true);
-        }
-        else
-        {
-            animator.SetBool("run", false);
-        }
+
+            if (Mathf.Abs(value) > 0)
+            {
+                animator.SetBool("run", true);
+            }
+            else
+            {
+                animator.SetBool("run", false);
+            }
+        
+        
     }
 
 

@@ -11,7 +11,6 @@ public class LevelController : MonoBehaviour {
     Vector3 startingPosition;
     int coins = 0;
     int fruits = 0;
-    int diamantsCount = 3;
     int lifes = 3;
     public UI2DSprite heartSprites;
     public UI2DSprite crystalSprites;
@@ -26,6 +25,7 @@ public class LevelController : MonoBehaviour {
 
     public void setStartPosition(Vector3 pos)
     {
+        
         this.startingPosition = pos;
     }
     public void onRabitDeath(HeroRabit rabit)
@@ -60,11 +60,11 @@ public class LevelController : MonoBehaviour {
         fruitsLabel.text = fruits.ToString();
     }
 
-    public void addDiamant()
+    public void addDiamant(Diamant diam)
     {
-        Sprite[] diamands = Resources.LoadAll<Sprite>("crystals");
-        --diamantsCount;
-        SpriteRenderer sr = crystalSprites.gameObject.GetComponentsInChildren<SpriteRenderer>()[diamantsCount];
-        sr.sprite = diamands[diamantsCount];
+        
+        SpriteRenderer sr = crystalSprites.gameObject.GetComponentsInChildren<SpriteRenderer>()[diam.getId()];
+        sr.gameObject.transform.localScale = new Vector3(100, 100, 0);
+        sr.sprite = diam.gameObject.GetComponent<SpriteRenderer>().sprite;
     }
 }

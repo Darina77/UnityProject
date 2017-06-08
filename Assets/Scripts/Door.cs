@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Door : MonoBehaviour {
 
+    public string levelName;
     void OnTriggerEnter2D(Collider2D collider)
     {
          HeroRabit rabit = collider.GetComponent<HeroRabit>();
         if (rabit != null)
         {
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene(levelName);
         }
         
         

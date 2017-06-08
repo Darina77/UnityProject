@@ -99,11 +99,11 @@ public class Orc : MonoBehaviour {
                 Vector3 my_pos = this.transform.position;
                 currentMode = Mode.Attack;
 
-                if (currentMode == Mode.Attack && Mathf.Abs(rabit_pos.y - my_pos.y) < 2.8f)
+                if (currentMode == Mode.Attack && Mathf.Abs(rabit_pos.y - my_pos.y) < 2.6f)
                 {
                     StartCoroutine(attack(rabit));
                 }
-                else if (currentMode == Mode.Attack && Mathf.Abs(rabit_pos.y - my_pos.y) > 2.8f)
+                else if (currentMode == Mode.Attack && Mathf.Abs(rabit_pos.y - my_pos.y) > 2.6f)
                 {
                     currentMode = Mode.Die;
                 }

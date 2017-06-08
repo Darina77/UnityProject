@@ -44,6 +44,11 @@ public class HeroRabit : MonoBehaviour {
         this.targetColor = WITHE_COLOR;
     }
 
+    public void makeSmall()
+    {
+        currentHealth = 1;
+        this.targetScale = SMALL_SIZE;
+    }
 
     Vector3 vel = Vector3.one;
     // Update is called once per frame

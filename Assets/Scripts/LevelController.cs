@@ -30,6 +30,11 @@ public class LevelController : MonoBehaviour {
     }
     public void onRabitDeath(HeroRabit rabit)
     {
+        if (heartSprites == null)
+        {
+            rabit.transform.position = this.startingPosition;
+            return;
+        }
         if (lifes > 0)
         {
             --lifes;

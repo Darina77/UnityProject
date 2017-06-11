@@ -26,7 +26,7 @@ public class LevelController : MonoBehaviour {
     {
         current = this;
         string str = PlayerPrefs.GetString(currentLevelName, null);
-        Debug.Log(str);
+        
         this.coins = PlayerPrefs.GetInt("coins", 0);
         this.stat = JsonUtility.FromJson<LevelStats>(str);
         Fruit.setCountZero();

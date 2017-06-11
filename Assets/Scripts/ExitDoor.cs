@@ -21,7 +21,7 @@ public class ExitDoor : MonoBehaviour {
           
             stats.levelPassed = true;
             string str = JsonUtility.ToJson(stats);
-            Debug.Log(str);
+    
             PlayerPrefs.SetString(currentLevelName, str);
             PlayerPrefs.SetInt("coins", LevelController.current.getCoins());
             PlayerPrefs.Save();

@@ -9,10 +9,9 @@ public class FruitsPainter : MonoBehaviour {
 	void Start () {
         bool[] collected = LevelController.current.getStats().collectedFruits;
         Fruit[] all = this.GetComponentsInChildren<Fruit>();
-        
         for(int i = 0; i < all.Length; ++i)
         {
-            if (collected[i])
+            if (collected[all[i].getId()])
                 all[i].GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 128);
               
         }

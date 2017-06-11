@@ -6,7 +6,8 @@ public class Orc : MonoBehaviour {
 
     public float speed = 2.0f;
     public Vector3 moveBy = Vector3.one;
-
+    public AudioClip attacSound = null;
+    AudioSource attacSource = null;
 
     public enum Mode
     {
@@ -31,7 +32,9 @@ public class Orc : MonoBehaviour {
         moveBy.y = 0;
         moveBy.z = 0;
         this.pointB = pointA + moveBy;
-    
+        this.attacSource = gameObject.AddComponent<AudioSource>();
+        this.attacSource.clip = attacSound;
+        
     }
 
 
@@ -82,6 +85,8 @@ public class Orc : MonoBehaviour {
 
 
         animator.SetBool("attack", true);
+        if(SoundManager.Instance.isSoundOn())
+            attacSource.Play();
         rabit.removeOneHealth();
         yield return new WaitForSeconds(0.8f);
         animator.SetBool("attack", false);
@@ -187,6 +192,7 @@ public class Orc : MonoBehaviour {
         {
             Animator animator = GetComponent<Animator>();
             animator.SetBool("die", true);
+            
             this.GetComponent<BoxCollider2D>().isTrigger = true;
            
             if (myBody != null) Destroy(myBody);

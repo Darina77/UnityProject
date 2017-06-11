@@ -1,31 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-public class StartController : MonoBehaviour {
+
+public class PauseButt : MonoBehaviour {
 
     public MyButt playButton;
-    public GameObject settingsScreen;
-    public MyButt settings;
-
+    public GameObject settings;
     void Start()
     {
         playButton.signalOnClick.AddListener(this.onPlay);
-        settings.signalOnClick.AddListener(this.onSettings);
     }
     void onPlay()
     {
-        SceneManager.LoadScene("ChooseLevel");
-    }
-
-    void onSettings()
-    {
         Time.timeScale = 0;
-        GameObject obj = GameObject.Find("UI Root").AddChild(this.settingsScreen);
-  
+        GameObject obj = this.gameObject.AddChild(this.settings);
+        //Розміщуємо в просторі
         obj.transform.position = this.transform.position;
         obj.transform.position += new Vector3(0.0f, 1.0f, 0.0f);
-       
+        //Запускаємо в рух
         SettingsPopUp settings = obj.GetComponent<SettingsPopUp>();
     }
 }

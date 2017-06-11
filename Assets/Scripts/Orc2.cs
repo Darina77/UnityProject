@@ -8,7 +8,9 @@ public class Orc2 : MonoBehaviour {
     public Vector3 moveBy = Vector3.one;
     public float seeOn = 10.0f;
     public float carrotPeriod = 3.0f;
-
+    public AudioClip attacSound = null;
+    AudioSource attacSource = null;
+  
     public enum Mode
     {
         GoToA,
@@ -33,7 +35,9 @@ public class Orc2 : MonoBehaviour {
         moveBy.y = 0;
         moveBy.z = 0;
         this.pointB = pointA + moveBy;
-
+        this.attacSource = gameObject.AddComponent<AudioSource>();
+        this.attacSource.clip = attacSound;
+        
     }
 
 
@@ -65,6 +69,7 @@ public class Orc2 : MonoBehaviour {
 
         
         animator.SetBool("attack", true);
+        attacSource.Play();
         launchCarrot(getDirection());
         yield return new WaitForSeconds(0.8f);
 
@@ -226,6 +231,7 @@ public class Orc2 : MonoBehaviour {
         {
             Animator animator = GetComponent<Animator>();
             animator.SetBool("die", true);
+            
             this.GetComponent<BoxCollider2D>().isTrigger = true;
 
             if (myBody != null) Destroy(myBody);

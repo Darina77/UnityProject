@@ -15,13 +15,19 @@ public class HeroRabit : MonoBehaviour {
     public float JumpSpeed = 2.0f;
     public int healthLimit = 2;
     public float invulnerableTime = 4.0f;
+    public AudioClip deathSound = null;
+    public AudioClip goSound = null;
+    public AudioClip jumpSound = null;
 
     Rigidbody2D myBody = null;
     Transform heroParent = null;
     Vector3 targetScale;
-    Color32 targetColor; 
+    Color32 targetColor;
+    AudioSource deathSource = null;
+    AudioSource goSource = null;
+    AudioSource jumpSource = null;
 
-    bool isGrounded = false;
+    bool isGrounded = true;
     bool JumpActive = false;
     bool isInvulnerable = false;
     bool canChangeScale = true;
@@ -42,6 +48,14 @@ public class HeroRabit : MonoBehaviour {
         this.heroParent = this.transform.parent;
         this.targetScale = SMALL_SIZE;
         this.targetColor = WITHE_COLOR;
+        this.deathSource = gameObject.AddComponent<AudioSource>();
+        this.deathSource.clip = deathSound;
+        this.goSource = gameObject.AddComponent<AudioSource>();
+        this.goSource.spatialBlend = 1;
+        this.goSource.clip = goSound;
+        this.jumpSource = gameObject.AddComponent<AudioSource>();
+        this.jumpSource.clip = jumpSound;
+       
     }
 
     public void makeSmall()
@@ -90,13 +104,27 @@ public class HeroRabit : MonoBehaviour {
             }
 
 
+
             if (Mathf.Abs(value) > 0)
             {
+                if (SoundManager.Instance.isSoundOn() && !goSource.isPlaying && isGrounded)
+                {
+                    goSource.Play();
+                }
+                else if (!isGrounded)
+                {
+                    goSource.Stop();
+                }
                 animator.SetBool("run", true);
+
             }
             else
             {
                 animator.SetBool("run", false);
+                if (SoundManager.Instance.isSoundOn())
+                {
+                    goSource.Stop();
+                }
             }
         }
     }
@@ -106,6 +134,11 @@ public class HeroRabit : MonoBehaviour {
 
         if (currentHealth <= 0)
         {
+            if (SoundManager.Instance.isSoundOn())
+            {
+                deathSource.Play();
+            }
+
             Animator animator = GetComponent<Animator>();
             animator.SetBool("dead", true);
             
@@ -167,6 +200,7 @@ public class HeroRabit : MonoBehaviour {
 
             if (hit)
             {
+                if(!isGrounded && (SoundManager.Instance.isSoundOn())) jumpSource.Play();
                 isGrounded = true;
                 //Перевіряємо чи ми опинились на платформі
                 if (hit.transform != null
@@ -178,10 +212,11 @@ public class HeroRabit : MonoBehaviour {
                 }
                 else canChangeScale = true;
 
-
             }
             else
             {
+                if (isGrounded && SoundManager.Instance.isSoundOn()) 
+                    jumpSource.Play();
                 isGrounded = false;
                 this.transform.parent = this.heroParent;
 
@@ -192,6 +227,7 @@ public class HeroRabit : MonoBehaviour {
             if (Input.GetButtonDown("Jump") && isGrounded)
             {
                 this.JumpActive = true;
+
             }
             if (this.JumpActive)
             {
@@ -214,11 +250,13 @@ public class HeroRabit : MonoBehaviour {
             }
             if (this.isGrounded)
             {
+               
                 animator.SetBool("jump", false);
             }
             else
             {
                 animator.SetBool("jump", true);
+               
             }
         }
     }

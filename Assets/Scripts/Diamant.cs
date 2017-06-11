@@ -11,8 +11,14 @@ public class Diamant : Collectable
     {
         id = count;
         ++count;
-        Debug.Log(count);
+        
     }
+
+    public static void setCountZero()
+    {
+        count = 0;
+    }
+
 
     public int getId() { return id; }
     protected override void OnRabitHit(HeroRabit rabit)

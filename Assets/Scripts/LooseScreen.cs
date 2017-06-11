@@ -15,6 +15,7 @@ public class LooseScreen : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        Time.timeScale = 0;
         background.signalOnClick.AddListener(this.onClosePlay);
         close.signalOnClick.AddListener(this.onClosePlay);
         replay.signalOnClick.AddListener(this.onReplayPlay);
@@ -37,11 +38,13 @@ public class LooseScreen : MonoBehaviour {
 
     private void onReplayPlay()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(LevelController.current.currentLevelName);
     }
 
     private void onClosePlay()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }
 

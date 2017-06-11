@@ -25,7 +25,7 @@ public class StartController : MonoBehaviour {
   
         obj.transform.position = this.transform.position;
         obj.transform.position += new Vector3(0.0f, 1.0f, 0.0f);
-       
+        
         SettingsPopUp settings = obj.GetComponent<SettingsPopUp>();
     }
 }

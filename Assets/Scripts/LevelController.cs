@@ -26,7 +26,6 @@ public class LevelController : MonoBehaviour {
     {
         current = this;
         string str = PlayerPrefs.GetString(currentLevelName, null);
-        
         this.coins = PlayerPrefs.GetInt("coins", 0);
         this.stat = JsonUtility.FromJson<LevelStats>(str);
         Fruit.setCountZero();
@@ -129,5 +128,20 @@ public class LevelController : MonoBehaviour {
     public SpriteRenderer[] getCrystals()
     {
         return crystalSprites.gameObject.GetComponentsInChildren<SpriteRenderer>();
+    }
+
+    public void addLife(OneHeart heart)
+    {
+        if (heartSprites == null || lifes == 3)
+        {
+            return;
+        }
+        else if (lifes < 3)
+        {
+            
+            SpriteRenderer sr = heartSprites.gameObject.GetComponentsInChildren<SpriteRenderer>()[lifes];
+            sr.sprite = heart.gameObject.GetComponent<SpriteRenderer>().sprite;
+            ++lifes;
+        }
     }
 }

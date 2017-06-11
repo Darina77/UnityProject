@@ -127,6 +127,7 @@ public class HeroRabit : MonoBehaviour {
                 }
             }
         }
+        
     }
 
     private IEnumerator die()
@@ -208,6 +209,7 @@ public class HeroRabit : MonoBehaviour {
                 {
                     //Приліпаємо до платформи
                     this.transform.parent = hit.transform;
+                    
                     canChangeScale = false;
                 }
                 else canChangeScale = true;
